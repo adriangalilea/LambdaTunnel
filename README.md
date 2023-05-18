@@ -12,7 +12,7 @@ What about using locally a remote Nvidia H100 ($40,000 GPU) at $2,40 per hour?
 Open your terminal.
 Run the following command:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/adriangalilea/LambdaTunnel/main/connect_to_server.sh)
+bash <(curl -s https://raw.githubusercontent.com/adriangalilea/LambdaTunnel/main/fast_setup.sh)
 ```
 Follow the prompts in the terminal. The script will ask for the IP address of your Lambda Cloud instance, create an SSH tunnel, and mount the instance's filesystem on your local machine.
 Once the script has finished running, you can access the stable-diffusion UI at http://localhost:7860.
