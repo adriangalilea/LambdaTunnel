@@ -5,8 +5,8 @@ What about using locally a remote Nvidia H100 ($40,000 GPU) at $2,40 per hour?
 
 
 # Prerequisites
-- An account on Lambda Cloud.
-- An SSH key pair that you can use to connect to your Lambda Cloud instance.
+- An account on Lambda Cloud. (You can create it meanwhile.)
+- ~~An SSH key pair that you can use to connect to your Lambda Cloud instance.~~ ✔️ fast_setup.sh
 
 # Fast set-up if you hate security
 _This is only for the brave ones that trust random people on the internet, definitely a bad idea, but thanks for trusting me guys, this is why I do what I do.❤️_ 
