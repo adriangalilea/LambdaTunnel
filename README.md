@@ -42,11 +42,14 @@ Or even better read how to do it manually:
 8. For convenience you could connect to the remote server through filezilla or duck
 
 # To-do
+- [x] Working fast_setup.sh
+- [ ] Proper manual guide
 - [ ] pre-selecting extensions
 - [ ] pre-selecting models from civit.ai
 - [ ] Having an auto-close instance timer so you don't burn money if you forget.
-- [ ] Connect trough iPad
-- [ ] YouTube videos
+- [ ] Test connect trough iPad Manually
+- [ ] Automate iPad connection(prolly not gonna happen)
+- [ ] YouTube video tutorial
 - [ ] Illustrate this readme with performance metrics.
 
 # Contributing
