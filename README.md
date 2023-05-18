@@ -4,7 +4,7 @@ _Performance for [stable-diffusion](https://github.com/AUTOMATIC1111/stable-diff
 What about using locally a remote Nvidia H100 ($40,000 GPU) at $2,40 per hour?
 
 <img width="2304" alt="Screenshot taken from an A60 instance testing video2video" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/5ff74857-984b-4b8c-84e4-097c07b645a3">
-
+_Screenshot taken from an A60 instance testing video2video_
 
 # Prerequisites
 - An account on Lambda Cloud. (You can create it meanwhile.)
