@@ -43,6 +43,7 @@ bash connect_to_server.sh
 Or even better read how to do it manually:
 
 # Manual set-up for my fellow tin-foil hat club.
+__This is the way to go champ, you did the right thing, now treat yourself and go execute the above random command for the fast set-up that you won't even bother double-checking.__ 👀
 
 1. [SSH key pair setup](https://cloud.lambdalabs.com/ssh-keys)
 2. Spin up the [lambdalabs instance](https://cloud.lambdalabs.com/instances)
