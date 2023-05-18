@@ -52,6 +52,7 @@ Or even better read how to do it manually:
 
 # To-do
 - [x] Working fast_setup.sh
+- [ ] #1
 - [ ] Proper manual guide
 - [ ] pre-selecting extensions
 - [ ] pre-selecting models from civit.ai
