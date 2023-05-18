@@ -154,12 +154,16 @@ while true; do
   # If the output is not empty (which means the server is responding), break the loop
   if [[ ! -z "$page_content" ]]; then
     echo -e "\r${GREEN}localhost:7860 is serving.${NC}\n"
+    echo -e "${GREEN}The stable diffusion has been installed successfully on the remote server.${NC}"
     break
   else
-    printf "\r${RED}localhost:7860 is not serving yet. Retrying...${NC}"
+    echo -e "\n${RED}Currently, localhost:7860 is not serving yet.${NC}"
+    echo -e "${YELLOW}Setting up the stable diffusion on the remote server is in progress. This process typically takes about 10 minutes based on previous tests. Please be patient and keep in mind that the server uptime charges apply during this setup time.${NC}"
+    echo -e "${YELLOW}NOTE: This setup process will occur each time you spin up a new instance. Also, I am not affiliated with Lambda, though I'm open to collaborations.${NC}"
     sleep 5
   fi
 done
+
 
 # We open up a tab
 open "http://127.0.0.1:7860"
