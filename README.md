@@ -42,11 +42,11 @@ Or even better read how to do it manually:
 8. For convenience you could connect to the remote server through filezilla or duck
 
 # To-do
-[ ] pre-selecting extensions
-[ ] pre-selecting models from civit.ai
-[ ] Having an auto-close instance timer so you don't burn money if you forget.
-[ ] Connect trough iPad
-[ ] YouTube videos
+- [ ] pre-selecting extensions
+- [ ] pre-selecting models from civit.ai
+- [ ] Having an auto-close instance timer so you don't burn money if you forget.
+- [ ] Connect trough iPad
+- [ ] YouTube videos
 
 # Contributing
 I welcome contributions to this project! Please feel free to open an issue or submit a pull request.
