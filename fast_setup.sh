@@ -31,14 +31,56 @@ echo "This script enables you to run Stable Diffusion Automatic1111 webui on a r
 # Print a warning message
 echo -e "${RED}\nWARNING: Please exercise caution when executing scripts from the internet. For more information, visit https://github.com/adriangalilea/LambdaTunnel/blob/main/README.md${NC}"
 
-# Ask for the server's IP address and confirm user's acceptance of risks
-echo -e "\nBy entering your SSH server's IP address and continuing, you acknowledge the risks and agree to use the software as-is. I am not responsible for any potential issues."
+# Ask for the user's acceptance of risks
+read -p "\nBy continuing, you acknowledge the risks and agree to use the software as-is. I am not responsible for any potential issues. Do you understand? (y/n): " risks_ok
+
+# Check if the user wants to quit
+if [[ "$risks_ok" != "y" && "$risks_ok" != "Y" ]]; then
+  echo -e "${RED}\nUser did not accept risks. Exiting...${NC}"
+  exit 0
+fi
+
+# Check for SSH key pair
+if [[ ! -f "$HOME/.ssh/id_rsa.pub" && ! -f "$HOME/.ssh/id_ed25519.pub" ]]; then
+  # Generate a new SSH key pair if none exists
+  echo -e "${GREEN}\nGenerating a new SSH key pair...${NC}"
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+fi
+
+# Offer to copy or reveal the public key
+read -p "\nDo you want to copy (c) or reveal (r) your SSH public key, or do nothing (n)? " key_option
+
+if [[ "$key_option" == "c" || "$key_option" == "C" ]]; then
+  # Copy the public key to the clipboard
+  if [[ -f "$HOME/.ssh/id_rsa.pub" ]]; then
+    pbcopy < ~/.ssh/id_rsa.pub
+  else
+    pbcopy < ~/.ssh/id_ed25519.pub
+  fi
+  echo -e "${GREEN}Your public key has been copied to your clipboard.${NC}"
+elif [[ "$key_option" == "r" || "$key_option" == "R" ]]; then
+  # Display the public key in the terminal
+  if [[ -f "$HOME/.ssh/id_rsa.pub" ]]; then
+    cat ~/.ssh/id_rsa.pub
+  else
+    cat ~/.ssh/id_ed25519.pub
+  fi
+fi
+
+# Open the Lambda Cloud SSH Keys page
+open "https://cloud.lambdalabs.com/ssh-keys"
+echo -e "\nPlease add your public SSH key to the Lambda Cloud SSH Keys page. When you're done, press any key to continue..."
+read -n 1
+
+# Open the Lambda Cloud Instances page
+open "https://cloud.lambdalabs.com/instances"
+echo -e "\nPlease launch your instance on the Lambda Cloud Instances page. Once you have the IP address, enter it below to continue..."
+
 read -p "\nEnter your SSH server's IP address to continue: " server_ip
 
 # Check if the user wants to quit
 if [ -z "$server_ip" ]; then
-  echo -e "\nEnter your SSH server's IP address to continue: \c"
-  read server_ip
+  echo -e "${RED}\nNo IP address provided. Exiting...${NC}"
   exit 0
 fi
 
@@ -57,11 +99,23 @@ echo -e "\r${GREEN}Server at $server_ip is reachable.${NC}\n"
 existing_tunnel_pid=$(lsof -ti :7860)
 
 if [[ -z "$existing_tunnel_pid" ]]; then
-  # Create an SSH tunnel
-  echo -e "${GREEN}Setting up SSH tunnel...${NC}"
-  ssh -N -L 7860:localhost:7860 ubuntu@$server_ip > /dev/null &
-  spinner $!
-  echo -e "\r${GREEN}SSH tunnel is up.${NC}\n"
+  while true; do
+    # Attempt to create an SSH tunnel
+    echo -e "${GREEN}Attempting to set up SSH tunnel...${NC}"
+    ssh -t -N -L 7860:localhost:7860 ubuntu@$server_ip > /dev/null &
+    ssh_pid=$!
+    # Wait for the SSH command to complete
+    wait $ssh_pid
+
+    # If the SSH command was successful, break the loop
+    if [[ $? -eq 0 ]]; then
+      echo -e "\r${GREEN}SSH tunnel is up.${NC}\n"
+      break
+    else
+      echo -e "${RED}Failed to set up SSH tunnel. Retrying in 5 seconds...${NC}"
+      sleep 5
+    fi
+  done
 else
   echo -e "\r${GREEN}SSH tunnel is already up. (PID: $existing_tunnel_pid)${NC}\n"
 fi
