@@ -24,7 +24,7 @@ While every effort has been made to ensure the safety and effectiveness of this 
 
 For better security, consider cloning this repository and running the script locally:
 ```bash
-git clone https://github.com/adriangalilea/LambdaGPU-Helper.git
+git clone https://github.com/adriangalilea/LambdaTunnel.git
 cd LambdaGPU-Helper
 bash connect_to_server.sh
 ```
