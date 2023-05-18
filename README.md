@@ -42,7 +42,7 @@ bash connect_to_server.sh
 ```
 Or even better read how to do it manually:
 
-# Manual set-up
+# Manual set-up for my fellow tin-foil hat club.
 
 1. [SSH key pair setup](https://cloud.lambdalabs.com/ssh-keys)
 2. Spin up the [lambdalabs instance](https://cloud.lambdalabs.com/instances)
