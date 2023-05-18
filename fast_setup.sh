@@ -58,6 +58,12 @@ if [[ "$key_option" == "c" || "$key_option" == "C" ]]; then
     pbcopy < ~/.ssh/id_ed25519.pub
   fi
   echo -e "${GREEN}Your public key has been copied to your clipboard.${NC}"
+
+  # Open the Lambda Cloud SSH Keys page
+  open "https://cloud.lambdalabs.com/ssh-keys"
+  echo -e "\nPlease add your public SSH key to the Lambda Cloud SSH Keys page. When you're done, press any key to continue..."
+  read -n 1
+
 elif [[ "$key_option" == "r" || "$key_option" == "R" ]]; then
   # Display the public key in the terminal
   if [[ -f "$HOME/.ssh/id_rsa.pub" ]]; then
@@ -65,12 +71,13 @@ elif [[ "$key_option" == "r" || "$key_option" == "R" ]]; then
   else
     cat ~/.ssh/id_ed25519.pub
   fi
+
+  # Open the Lambda Cloud SSH Keys page
+  open "https://cloud.lambdalabs.com/ssh-keys"
+  echo -e "\nPlease add your public SSH key to the Lambda Cloud SSH Keys page. When you're done, press any key to continue..."
+  read -n 1
 fi
 
-# Open the Lambda Cloud SSH Keys page
-open "https://cloud.lambdalabs.com/ssh-keys"
-echo -e "\nPlease add your public SSH key to the Lambda Cloud SSH Keys page. When you're done, press any key to continue..."
-read -n 1
 
 # Open the Lambda Cloud Instances page
 open "https://cloud.lambdalabs.com/instances"
@@ -120,20 +127,19 @@ else
   echo -e "\r${GREEN}SSH tunnel is already up. (PID: $existing_tunnel_pid)${NC}\n"
 fi
 
-
 # Set up tmux session
 echo -e "${GREEN}Setting up tmux session on remote instance...${NC}"
 i=0
-ssh -t ubuntu@$server_ip "tmux has-session -t stable_webui" 2>/dev/null
+ssh -nT ubuntu@$server_ip "tmux has-session -t stable_webui" 2>/dev/null
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}tmux session is already running.${NC}\n"
 else
-  ssh -t ubuntu@$server_ip "tmux new-session -d -s stable_webui 'bash <(wget -qO- https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh)'" &
+  ssh -nT ubuntu@$server_ip "tmux new-session -d -s stable_webui 'bash <(wget -qO- https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh)'" &
   while [ $? -ne 0 ]; do
     i=$(((i + 1) % 4))
     printf "\r${RED}Setting up tmux session... ${spin:$i:1}${NC}"
     sleep 1
-    ssh -t ubuntu@$server_ip "tmux new-session -d -s stable_webui 'bash <(wget -qO- https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh)'" &
+    ssh -nT ubuntu@$server_ip "tmux new-session -d -s stable_webui 'bash <(wget -qO- https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui/master/webui.sh)'" &
   done
   echo -e "\r${GREEN}tmux session is up.${NC}\n"
 fi
