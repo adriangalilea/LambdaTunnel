@@ -34,13 +34,7 @@ Running scripts directly from the web is a potential security risk. Before runni
 
 While every effort has been made to ensure the safety and effectiveness of this script, it is provided as-is without any warranties or assurances of any kind. The author of this script cannot be held responsible for any damages, data loss, or issues of any kind arising from the use of this script.
 
-For better security, consider cloning this repository and running the script locally:
-```bash
-git clone https://github.com/adriangalilea/LambdaTunnel.git
-cd LambdaGPU-Helper
-bash connect_to_server.sh
-```
-Or even better read how to do it manually:
+For better security, do it manually:
 
 # Manual set-up for my fellow tin-foil hat club.
 __This is the way to go champ, you did the right thing, now treat yourself and go execute the above random command for the fast set-up that you won't even bother double-checking.__ 👀
