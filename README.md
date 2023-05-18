@@ -47,6 +47,7 @@ Or even better read how to do it manually:
 - [ ] Having an auto-close instance timer so you don't burn money if you forget.
 - [ ] Connect trough iPad
 - [ ] YouTube videos
+- [ ] Illustrate this readme with performance metrics.
 
 # Contributing
 I welcome contributions to this project! Please feel free to open an issue or submit a pull request.
