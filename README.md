@@ -1,4 +1,4 @@
-# Why this project?
+# Why?
 _Performance for [stable-diffusion](https://github.com/AUTOMATIC1111/stable-diffusion-webui) on MacOS/iPadOS is not that great, many people are building dedicated Windows systems with high-end GPU's, and that's great but I think we can do better._
 
 What about using locally a remote Nvidia H100 ($40,000 GPU) at $2,40 per hour?
