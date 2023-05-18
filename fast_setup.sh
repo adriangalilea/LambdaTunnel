@@ -172,7 +172,8 @@ while true; do
   echo "1. [Optional] Install sshfs to allow accessing the remote server through Finder."
   echo "2. [Optional] Mount the SSH server. (This allows you to access the remote server through Finder.)"
   echo "3. View output of remote tmux session."
-  echo "4. Exit."
+  echo "4. Attach to the remote tmux session."
+  echo "5. Exit."
   read -p "Enter the number of the option you wish to proceed with: " option
 
   if [ "$option" == "1" ]; then
@@ -196,6 +197,9 @@ while true; do
     echo -e "\n${GREEN}Monitoring the output of the remote tmux session. Press 'Ctrl+C' to stop.${NC}"
     watch -n 1 "echo -e '\n${RED}Press Ctrl+C to stop watching${NC}'; ssh -t ubuntu@$server_ip 'tmux capture-pane -p -t stable_webui; tmux show-buffer' 2> /dev/null"
   elif [ "$option" == "4" ]; then
+    echo -e "\n${GREEN}Attaching to the remote tmux session. Press 'Ctrl+b' followed by 'd' to detach.${NC}"
+    ssh -t ubuntu@$server_ip 'tmux attach -t stable_webui'
+  elif [ "$option" == "5" ]; then
     echo -e "\n${RED}WARNING: You MUST manually shutdown the instance in the Lambda Cloud web interface or you'll continue to be charged by the hour. Opening the web interface now...${NC}"
     # Terminate the SSH tunnel
     pkill -f "ssh -N -L 7860:localhost:7860 ubuntu@$server_ip"
@@ -206,5 +210,6 @@ while true; do
     echo -e "\n${RED}Invalid option. Please try again.${NC}"
   fi
 done
+
 
 echo -e "\n${GREEN}Thank you for using LambdaTunnel! Goodbye!${NC}"
