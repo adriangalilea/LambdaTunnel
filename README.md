@@ -18,6 +18,10 @@ Follow the prompts in the terminal. The script will ask for the IP address of yo
 Once the script has finished running, you can access the stable-diffusion UI at http://localhost:7860.
 
 # Disclaimer
+## Lamdalabs
+I'm not affiliated in any way shape or form to Lambdalabs... yet 😜
+
+## Security
 Running scripts directly from the web is a potential security risk. Before running the command, you should inspect the script from this repository. By running the command, you are acknowledging that you trust the source and the contents of the script.
 
 While every effort has been made to ensure the safety and effectiveness of this script, it is provided as-is without any warranties or assurances of any kind. The author of this script cannot be held responsible for any damages, data loss, or issues of any kind arising from the use of this script.
