@@ -8,9 +8,11 @@ What about using locally a remote Nvidia H100 ($40,000 GPU) at $2,40 per hour?
 - An account on Lambda Cloud.
 - An SSH key pair that you can use to connect to your Lambda Cloud instance.
 
-# Fast set-up
-Open your terminal.
-Run the following command:
+# Fast set-up if you hate security
+_This is only for the brave ones that trust random people on the internet, definitely a bad idea, but thanks for trusting me guys, this is why I do what I do.❤️_ 
+
+1. Open your terminal.
+2. Run the following command:
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/adriangalilea/LambdaTunnel/main/fast_setup.sh)
 ```
@@ -20,6 +22,9 @@ Once the script has finished running, you can access the stable-diffusion UI at 
 # Disclaimer
 ## Lamdalabs
 I'm not affiliated in any way shape or form to Lambdalabs... yet 😜
+
+## WARNING
+BE SURE TO CLOSE THE INSTANCE WHEN YOU ARE DONE I WOULD LIKE TO BE ABLE TO CLOSE THE SESSION BY SHUTTING DOWN THE SERVER BUT LAMBDALABS DON'T ALLOW THIS, I'M SHOUTING IN HOPES YOU SAVE SOME HARD EARNED CASH, IF YOU ARE READING THIS AFTER HAVING SPENT A BUNCH OF MONEY BECAUSE YOU WENT TO SLEEP AND FORGOT, I'M SORRY BUT THAT'S YOUR FAULT <3, THANKS FOR LISTENING TO MY TED-TALK.
 
 ## Security
 Running scripts directly from the web is a potential security risk. Before running the command, you should inspect the script from this repository. By running the command, you are acknowledging that you trust the source and the contents of the script.
@@ -58,3 +63,7 @@ Or even better read how to do it manually:
 
 # Contributing
 I welcome contributions to this project! Please feel free to open an issue or submit a pull request.
+
+Author: Adrian Galilea
+Co-author: ChatGPT & copilot
+🫀x🤖
