@@ -109,14 +109,21 @@ if [[ -z "$existing_tunnel_pid" ]]; then
   while true; do
     # Attempt to create an SSH tunnel
     echo -e "${GREEN}Attempting to set up SSH tunnel...${NC}"
-    ssh -t -N -L 7860:localhost:7860 ubuntu@$server_ip > /dev/null &
+    ssh -o StrictHostKeyChecking=no -t -N -L 7860:localhost:7860 ubuntu@$server_ip >ssh_tunnel_attempt.log 2>&1 &
     ssh_pid=$!
     # Wait for the SSH command to complete
     wait $ssh_pid
 
+    if grep -q "Host key verification failed" ssh_tunnel_attempt.log; then
+      echo -e "${RED}The host key for $server_ip has changed, which could indicate a security issue.\nIf you've reinstalled the OS on your server recently, this is expected.\nTo resolve this, please manually delete the offending key in your ~/.ssh/known_hosts file.\nLook for the line that starts with your server's IP address and delete it.\nIf you have not reinstalled the OS, this could indicate a man-in-the-middle attack. Exercise caution.${NC}"
+      rm ssh_tunnel_attempt.log
+      exit 1
+    fi
+
     # If the SSH command was successful, break the loop
     if [[ $? -eq 0 ]]; then
       echo -e "\r${GREEN}SSH tunnel is up.${NC}\n"
+      rm ssh_tunnel_attempt.log
       break
     else
       echo -e "${RED}Failed to set up SSH tunnel. Retrying in 5 seconds...${NC}"
