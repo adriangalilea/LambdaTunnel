@@ -1,68 +1,63 @@
-from textual.app import App
-from textual import events
 from lambdalabs import LambdaLabs
-from textual.widgets import Button, Checkbox, Static
-from textual.reactive import Reactive
+from termcolor import colored, cprint
+import time
+import os
 
-class LambdaLabsApp(App):
-    CSS_PATH = "lambda.css"
-    BINDINGS = [("s", "action_start_instance", "Start Instance"), 
-                ("a", "action_set_alarm", "Set Alarm"), 
-                ("j", "action_auto_join", "Auto Join")]
+lambda_labs = LambdaLabs('')
+SSH_KEY_NAME = ""
 
-    def __init__(self, api_key):
-        super().__init__()
-        self.lambdalabs = LambdaLabs(api_key)
-        self.region_name = self.lambdalabs.get_region()  # dynamically retrieve region
-        self.instance_type_name = self.lambdalabs.get_instance_type()  # dynamically retrieve instance type
-        self.ssh_key_name = None  # Will be set in choose_ssh_key
-        self.offered_instances = Reactive([])
-        self.alarms = []
-        self.static_widget = Static("Press a number key to check instance status")
+if not SSH_KEY_NAME:
+    ssh_keys = lambda_labs.list_ssh_keys()
+    print("Select an SSH key:")
+    for i, key in enumerate(ssh_keys):
+        print(f"{i+1}. {key}")
+    selected_key = int(input("Enter the number of your selection: ")) - 1
+    SSH_KEY_NAME = ssh_keys[selected_key]
 
-    async def choose_ssh_key(self):
-        ssh_keys = self.lambdalabs.list_ssh_keys()
-        menu_items = [(str(i), key) for i, key in enumerate(ssh_keys)]
-        # The Menu class is not available in the textual.widgets module
-        # Instead, we will print the keys and ask the user to select one
-        print("Available SSH keys:")
-        for item in menu_items:
-            print(item)
-        selected_key = input("Please enter the number of the SSH key you want to use: ")
-        self.ssh_key_name = menu_items[int(selected_key)][1]
-        
-    async def on_mount(self) -> None:
-        await self.choose_ssh_key()
-        self.offered_instances = self.lambdalabs.list_offered_instances()
-        self.screen.background = "darkblue"
-        await self.view.dock(self.static_widget, edge="top")
-        await self.view.dock(self.start_button, edge="left")
-        await self.view.dock(self.set_alarm_button, edge="left")
-        await self.view.dock(self.auto_join_checkbox, edge="left")
-
-    def on_key(self, event: events.Key) -> None:
-        if event.key.isdecimal():
-            instance_index = int(event.key)
-            if instance_index < len(self.offered_instances):
-                instance = self.offered_instances[instance_index]
-                if instance['status'] == 'offline':
-                    self.alarms.append(instance['id'])
-                    self.screen.background = "bg:green"
-                    self.static_widget.update("Instance is offline")
-                else:
-                    self.screen.background = "bg:red"
-                    self.static_widget.update("Instance is online")
-
-    def action_start_instance(self) -> None:
-        self.lambdalabs.launch_instance(self.region_name, self.instance_type_name, [self.ssh_key_name])
-
-    def action_set_alarm(self, instance_id: str) -> None:
-        self.lambdalabs.restart_instance(instance_id)
-
-    def action_auto_join(self, instance_id: str) -> None:
-        self.lambdalabs.terminate_instance(instance_id)
-
-if __name__ == "__main__":
-    api_key = 'secret_lambda_b3e9dc2cdfe94bebaad2805b7d579ea0.jHMgOTrQKIfGaOABzkFNAgADX5a3YXg1'  # replace with your actual API key
-    app = LambdaLabsApp(api_key)
-    app.run()
+running_instances = lambda_labs.list_running_instances()
+if running_instances:
+    for instance_id in running_instances:
+        instance_details = lambda_labs.get_instance_details(instance_id)
+        print(f"Instance ID: {instance_id}")
+        print(f"Instance Type: {instance_details['instance_type']}")
+        print(f"Price (cents per hour): {instance_details['price_cents_per_hour']}")
+        print(f"IP: {instance_details['ip']}")
+        print("SSH LOGIN")
+        print(f"ssh ubuntu@{instance_details['ip']}")
+        print("\n")
+else:
+    offered_instances = lambda_labs.list_offered_instances()
+    cprint("\nInstances.\n", 'cyan', attrs=['bold'])
+    valid_instances = {k: v for k, v in offered_instances.items() if v is not None}
+    region_memory = {}
+    for i, (instance, details) in enumerate(valid_instances.items()):
+        price_per_hour = details['price_cents_per_hour'] / 100
+        if details['available']:
+            cprint(f"{i+1}. {instance} - ${price_per_hour:.2f}/hour", 'green')
+            region_memory[instance] = details['regions'][0] if details['regions'] else None
+        else:
+            cprint(f"{i+1}. {instance} - ${price_per_hour:.2f}/hour", 'red')
+    cprint("\nq. quit", 'blue', attrs=['bold'])
+    while True:
+        try:
+            user_input = input("\nEnter the number of the instance to launch: ")
+            if user_input.lower() == 'q':
+                exit()
+            selected_instance = int(user_input) - 1
+            INSTANCE_NAME = list(valid_instances.keys())[selected_instance]
+            SELECTED_REGION = region_memory.get(INSTANCE_NAME)
+            if SELECTED_REGION and valid_instances[INSTANCE_NAME]['available']:
+                lambda_labs.launch_instance(SELECTED_REGION, INSTANCE_NAME, [SSH_KEY_NAME])
+                cprint("\nInstance launched successfully.\n", 'green', attrs=['bold'])
+                break
+            else:
+                while True:
+                    if valid_instances[INSTANCE_NAME]['available']:
+                        cprint(f"{colored(time.strftime('%Y-%m-%d %H:%M:%S'), 'grey')} - {colored(INSTANCE_NAME, 'green')}", 'white')
+                        os.system('afplay /System/Library/Sounds/Glass.aiff')
+                        break
+                    else:
+                        cprint(f"{colored(time.strftime('%Y-%m-%d %H:%M:%S'), 'grey')} - {colored(INSTANCE_NAME, 'red')}", 'white')
+                        time.sleep(15)
+        except (ValueError, IndexError):
+            cprint("\nInvalid selection. Please try again.\n", 'red', attrs=['bold'])
