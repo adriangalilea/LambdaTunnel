@@ -101,10 +101,10 @@ def execute_payload(ip):
         ],
         # Add more payloads here
     }
-    print("Select a payload:")
+    cprint("\nSelect a payload:", 'green')
     for i, key in enumerate(payloads.keys()):
-        print(f"{i+1}. {key}")
-    selected_key = int(input("Enter the number of your selection: ")) - 1
+        cprint(f"{i+1}. {key}", 'green')
+    selected_key = int(input("\nEnter the number of your selection: ")) - 1
     payload = payloads[list(payloads.keys())[selected_key]]
     for command in payload:
         cprint(f"\nExecuting command: {command}\n", 'green')
@@ -118,7 +118,6 @@ def execute_payload(ip):
         if tunnel_check == 0:
             cprint("\nPayload is running on 127.0.0.1:7860\n", 'green', attrs=['bold'])
             os.system("open http://127.0.0.1:7860/")
-            
             break
         else:
             cprint("\nWaiting for payload to start...\n", 'yellow')
