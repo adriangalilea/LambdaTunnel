@@ -19,10 +19,10 @@ See what is available and directly launch an instance.
 Create an alarm for a specific type of instance.
 
 <img width="336" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/7767a49c-87e2-483d-be3b-4c879b41dbcd">
-
+Launch an instance
 
 <img width="273" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/282db9b6-739f-4133-b15a-c1869d265ab1">
-
+use the instance
 
 <img width="266" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/119214b5-f129-4b37-9e79-6f01e76bf25a">
 You can launch a payload that will run everything for you, including the ssh tunnel. I will add more than Fooocus, but currently is the one I'm using, feel free to add others.
