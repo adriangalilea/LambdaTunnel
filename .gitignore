@@ -1,7 +1,19 @@
-# Ignore Python virtual environments
-venv/
+# Ignore Python virtual environments and common files
 *.pyc
 __pycache__/
+*.pyo
+*.pyd
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info
+dist/
+build/
+venv/
+
+# Ignore environment variables file
+.env
 
 # Ignore Visual Studio Code files
 .vscode/
