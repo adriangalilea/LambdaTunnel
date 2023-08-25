@@ -3,10 +3,6 @@ _Performance for [stable-diffusion](https://github.com/AUTOMATIC1111/stable-diff
 
 What about using locally a remote Nvidia H100 ($40,000 GPU) at $1,90 per hour?
 
-<img width="2304" alt="Screenshot taken from an A60 instance testing video2video" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/5ff74857-984b-4b8c-84e4-097c07b645a3">
-
-_Screenshot taken from an A60 instance testing video2video_
-
 # Prerequisites
 - An account on Lambda Cloud.
 
@@ -14,6 +10,26 @@ _Screenshot taken from an A60 instance testing video2video_
 1. CLone the repo
 2. install requirements.txt
 3. Run main.py
+
+# Features
+<img width="330" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/4c0f00d4-dcb8-42bf-8dc9-04c128a1cd2d">
+See what is available and directly launch an instance.
+
+<img width="333" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/7d93326e-a15b-49ba-9928-a49a07023e63">
+Create an alarm for a specific type of instance.
+
+<img width="336" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/7767a49c-87e2-483d-be3b-4c879b41dbcd">
+
+
+<img width="273" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/282db9b6-739f-4133-b15a-c1869d265ab1">
+
+
+<img width="266" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/119214b5-f129-4b37-9e79-6f01e76bf25a">
+You can launch a payload that will run everything for you, including the ssh tunnel. I will add more than Fooocus, but currently is the one I'm using, feel free to add others.
+
+It'll atuomatically open a tab on your browser when it's done installing everything and doing the tunnel
+
+
 
 ## Lamdalabs
 I'm not affiliated in any way shape or form to Lambdalabs.
@@ -32,6 +48,7 @@ While every effort has been made to ensure the safety and effectiveness of this 
 # To-do
 - [x] Working fast_setup.sh
 - [x] update to python interactive program
+- [ ] create a payload for automatic1111
 - [ ] upgrade into a textual GUI
 - [ ] [#1](https://github.com/adriangalilea/LambdaTunnel/issues/1)
 - [ ] Having an auto-close instance timer so you don't burn money if you forget.
