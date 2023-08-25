@@ -16,6 +16,7 @@ load_dotenv()
 LAMBDA_LABS_KEY = os.getenv('LAMBDA_LABS_KEY')
 if not LAMBDA_LABS_KEY:
     cprint("No Lambda Labs Key found in .env file.", 'red')
+    os.system('open https://cloud.lambdalabs.com/api-keys')
     LAMBDA_LABS_KEY = input("Enter your Lambda Labs Key: ")
     with open('.env', 'a') as f:
         f.write(f'LAMBDA_LABS_KEY={LAMBDA_LABS_KEY}\n')
@@ -26,17 +27,32 @@ lambda_labs = LambdaLabs(LAMBDA_LABS_KEY)
 SSH_KEY_NAME = os.getenv('SSH_KEY_NAME')
 
 if not SSH_KEY_NAME:
-    cprint("No SSH Key Name found in .env file.", 'red')
     ssh_keys = lambda_labs.list_ssh_keys()
-    cprint("Select an SSH key:", 'green')
-    for i, key in enumerate(ssh_keys):
-        cprint(f"{i+1}. {key}", 'green')
-    selected_key = int(input("Enter the number of your selection: ")) - 1
-    SSH_KEY_NAME = ssh_keys[selected_key]
+    if ssh_keys:
+        cprint("Select an SSH key:", 'green')
+        for i, key in enumerate(ssh_keys):
+            cprint(f"{i+1}. {key}", 'green')
+        cprint(f"{len(ssh_keys)+1}. Create a new SSH key", 'green')
+        selected_key = int(input("Enter the number of your selection: ")) - 1
+        if selected_key < len(ssh_keys):
+            SSH_KEY_NAME = ssh_keys[selected_key]
+        else:
+            key_name = input("Enter a name for your new SSH key: ")
+            os.system(f"ssh-keygen -t rsa -b 4096 -C '{key_name}'")
+            public_key = open(f"{os.getenv('HOME')}/.ssh/{key_name}.pub").read()
+            lambda_labs.create_ssh_key(key_name, public_key)
+            SSH_KEY_NAME = key_name
+    else:
+        cprint("No SSH keys found. Creating a new one.", 'yellow')
+        key_name = input("Enter a name for your new SSH key: ")
+        os.system(f"ssh-keygen -t rsa -b 4096 -C '{key_name}'")
+        public_key = open(f"{os.getenv('HOME')}/.ssh/{key_name}.pub").read()
+        lambda_labs.create_ssh_key(key_name, public_key)
+        SSH_KEY_NAME = key_name
+
     with open('.env', 'a') as f:
         f.write(f'SSH_KEY_NAME={SSH_KEY_NAME}\n')
     os.environ['SSH_KEY_NAME'] = SSH_KEY_NAME
-
 os.system('clear')
 
 def display_running_instances():
