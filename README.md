@@ -33,6 +33,9 @@ You can launch a payload that will run everything for you, including the ssh tun
 
 It'll atuomatically open a tab on your browser when it's done installing everything and doing the tunnel
 
+<img width="372" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/8e5df76a-e0d7-4692-8a1f-8af131c58683">
+
+
 
 ## Lamdalabs
 I'm not affiliated in any way shape or form to Lambdalabs.
