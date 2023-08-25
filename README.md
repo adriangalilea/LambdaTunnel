@@ -35,6 +35,7 @@ It'll atuomatically open a tab on your browser when it's done installing everyth
 
 <img width="372" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/8e5df76a-e0d7-4692-8a1f-8af131c58683">
 
+<img width="2002" alt="image" src="https://github.com/adriangalilea/LambdaTunnel/assets/90320947/0f1b1521-2e5d-4b58-8641-5dd73fac53b1">
 
 
 ## Lamdalabs
