@@ -1,9 +1,5 @@
-# Ignore Python virtual environments and common files
 *.pyc
 __pycache__/
-*.pyo
-*.pyd
-*.pyc
 *.pyo
 *.pyd
 *.egg
@@ -11,13 +7,33 @@ __pycache__/
 dist/
 build/
 venv/
-
-# Ignore environment variables file
 .env
-
-# Ignore Visual Studio Code files
 .vscode/
-
-# Ignore PyCharm files
 .idea/
 *.iml
+*.log
+*.sqlite3
+*.swp
+*.swo
+*.pid
+*.pid.lock
+*.profile
+*.lock
+*.DS_Store
+*.cache
+*.rawproto
+*.retry
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.egg
+*.egg-info
+dist/
+build/
+venv/
+.env
+.vscode/
+.idea/
+*.iml
+.venv
