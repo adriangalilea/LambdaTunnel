@@ -17,13 +17,16 @@ class LambdaLabs:
             raise ValueError('Invalid auth_type. Must be "basic" or "bearer".')
 
     def launch_instance(self, region_name, instance_type_name, ssh_key_names, file_system_names=None, quantity=1, name=None):
-        url = self.base_url + '/instances'
+        url = self.base_url + '/instance-operations/launch'
         headers = self._get_auth_header()
+        # Check if ssh_key_names is a string, if so, convert it to a list
+        if isinstance(ssh_key_names, str):
+            ssh_key_names = [ssh_key_names]
         data = {
             'region_name': region_name,
             'instance_type_name': instance_type_name,
             'ssh_key_names': ssh_key_names,
-            'file_system_names': file_system_names,
+            'file_system_names': file_system_names if file_system_names else [],
             'quantity': quantity,
             'name': name
         }
@@ -38,14 +41,13 @@ class LambdaLabs:
         result = {}
         for key, value in data.items():
             result[key] = {
-                'available': bool('regions_with_capacity_available' in value and value['regions_with_capacity_available']),
                 'regions': [region['name'] for region in value.get('regions_with_capacity_available', [])],
                 'price_cents_per_hour': value['instance_type']['price_cents_per_hour']
             }
         return result
 
     def list_running_instances(self):
-        url = self.base_url + '/instances/running'
+        url = self.base_url + '/instances'
         headers = self._get_auth_header()
         response = requests.get(url, headers=headers)
         data = response.json().get('data', [])
@@ -66,16 +68,22 @@ class LambdaLabs:
             'ip': data['ip']
         }
 
-    def terminate_instance(self, instance_id):
-        url = self.base_url + '/instances/' + instance_id
+    def terminate_instance(self, instance_ids):
+        url = self.base_url + '/instance-operations/terminate'
         headers = self._get_auth_header()
-        response = requests.delete(url, headers=headers)
+        # Check if instance_ids is a string, if so, convert it to a list
+        if isinstance(instance_ids, str):
+            instance_ids = [instance_ids]
+        response = requests.post(url, headers=headers, json={'instance_ids': instance_ids})
         return response.json()
 
-    def restart_instance(self, instance_id):
-        url = self.base_url + '/instances/' + instance_id + '/restart'
+    def restart_instances(self, instance_ids):
+        url = self.base_url + '/instance-operations/restart'
         headers = self._get_auth_header()
-        response = requests.post(url, headers=headers)
+        # Check if instance_ids is a string, if so, convert it to a list
+        if isinstance(instance_ids, str):
+            instance_ids = [instance_ids]
+        response = requests.post(url, headers=headers, json={'instance_ids': instance_ids})
         return response.json()
 
     def list_ssh_keys(self):
