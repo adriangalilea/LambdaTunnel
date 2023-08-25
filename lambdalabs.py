@@ -1,5 +1,6 @@
 import requests
 import base64
+from time import sleep
 
 
 class LambdaLabs:
@@ -56,17 +57,30 @@ class LambdaLabs:
         return [instance['id'] for instance in data]
 
     def get_instance_details(self, instance_id):
-        url = self.base_url + '/instances/' + instance_id
-        headers = self._get_auth_header()
-        response = requests.get(url, headers=headers)
-        data = response.json().get('data', {})
-        if not data:
-            return {}
-        return {
-            'instance_type': data['instance_type']['name'],
-            'price_cents_per_hour': data['instance_type']['price_cents_per_hour'],
-            'ip': data['ip']
-        }
+        while True:
+            print("Waiting for IP...")
+            url = self.base_url + '/instances/' + instance_id
+            headers = self._get_auth_header()
+            response = requests.get(url, headers=headers)
+            data = response.json().get('data', {})
+            if not data:
+                return {}
+            try:
+                instance_type = data['instance_type']['name']
+                price_cents_per_hour = data['instance_type']['price_cents_per_hour']
+            except KeyError:
+                continue
+            try:
+                ip = data['ip']
+                return {
+                    'instance_type': instance_type,
+                    'price_cents_per_hour': price_cents_per_hour,
+                    'ip': ip
+                }
+            except KeyError:
+                continue
+            finally:
+                sleep(1)
 
     def terminate_instance(self, instance_ids):
         url = self.base_url + '/instance-operations/terminate'
@@ -74,7 +88,8 @@ class LambdaLabs:
         # Check if instance_ids is a string, if so, convert it to a list
         if isinstance(instance_ids, str):
             instance_ids = [instance_ids]
-        response = requests.post(url, headers=headers, json={'instance_ids': instance_ids})
+        response = requests.post(url, headers=headers, json={
+                                 'instance_ids': instance_ids})
         return response.json()
 
     def restart_instances(self, instance_ids):
@@ -83,7 +98,8 @@ class LambdaLabs:
         # Check if instance_ids is a string, if so, convert it to a list
         if isinstance(instance_ids, str):
             instance_ids = [instance_ids]
-        response = requests.post(url, headers=headers, json={'instance_ids': instance_ids})
+        response = requests.post(url, headers=headers, json={
+                                 'instance_ids': instance_ids})
         return response.json()
 
     def list_ssh_keys(self):
